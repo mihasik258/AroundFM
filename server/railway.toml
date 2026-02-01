@@ -2,7 +2,7 @@
 builder = "NIXPACKS"
 
 [build.nixpacks]
-pkgs = ["nodejs-18_x"]
+pkgs = ["nodejs-22_x"]
 
 [deploy]
 startCommand = "npm run start"
