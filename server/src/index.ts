@@ -252,7 +252,7 @@ app.use((err: Error, req: Request, res: Response, next: any) => {
 });
 
 // Запуск сервера
-app.listen(Number(PORT), '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📻 AroundFM API ready`);
 });
