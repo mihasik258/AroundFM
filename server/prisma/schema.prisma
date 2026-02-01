@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Пользователь Telegram
+model User {
+  id         String   @id @default(cuid())
+  telegramId BigInt   @unique
+  username   String?
+  firstName  String?
+  lastName   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Связи
+  favorites Favorite[]
+  settings  Settings?
+}
+
+// Избранные станции
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  stationId String   // ID станции из radio-browser API
+  name      String   // Название станции
+  url       String   // URL потока
+  country   String?
+  language  String?
+  genre     String?
+  addedAt   DateTime @default(now())
+
+  // Связь с пользователем
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Уникальность: пользователь может добавить станцию только один раз
+  @@unique([userId, stationId])
+}
+
+// Настройки пользователя
+model Settings {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  excludedLanguages String[] @default([])
+  preferredGenre    String?
+  autoPlay          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Связь с пользователем
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

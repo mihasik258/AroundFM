@@ -1,0 +1,214 @@
+.player {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: fadeIn 0.3s ease;
+    padding-bottom: 40px;
+}
+
+.player.loading,
+.player.error {
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    text-align: center;
+    gap: 16px;
+}
+
+.error-message {
+    color: var(--color-error);
+    font-size: 16px;
+}
+
+.player-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.settings-btn:hover {
+    opacity: 1;
+}
+
+.now-playing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.status-indicator {
+    color: var(--color-success);
+    font-size: 12px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.status-text {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.station-name {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--color-text);
+    min-height: 32px;
+}
+
+.globe-container {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin: 8px 0;
+}
+
+.station-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.station-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.country-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.country-pin {
+    font-size: 18px;
+}
+
+.country-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.language-flag {
+    font-size: 20px;
+    margin-left: 4px;
+}
+
+.genre-badge {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    background: rgba(93, 95, 239, 0.1);
+    padding: 4px 14px;
+    border-radius: 16px;
+    font-weight: 500;
+}
+
+/* Анимация для индикатора подключения */
+.status-indicator.pulse {
+    animation: statusPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(1.2);
+    }
+}
+
+/* Текст подключения с анимированными точками */
+.connecting-text {
+    display: inline-flex;
+    align-items: baseline;
+}
+
+.connecting-dots {
+    animation: dots 1.4s steps(4, end) infinite;
+    width: 24px;
+    display: inline-block;
+    text-align: left;
+}
+
+@keyframes dots {
+
+    0%,
+    20% {
+        content: '';
+        opacity: 0;
+    }
+
+    40% {
+        content: '.';
+        opacity: 1;
+    }
+
+    60% {
+        content: '..';
+    }
+
+    80%,
+    100% {
+        content: '...';
+    }
+}
+
+/* Счетчик пропущенных станций */
+.blacklist-info {
+    display: flex;
+    justify-content: center;
+    padding: 8px 16px;
+}
+
+.blacklist-count {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    background: rgba(255, 165, 0, 0.1);
+    padding: 4px 12px;
+    border-radius: 12px;
+}

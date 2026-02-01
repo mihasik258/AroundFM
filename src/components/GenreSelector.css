@@ -1,0 +1,73 @@
+.genre-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    animation: fadeIn 0.3s ease;
+}
+
+.genre-header {
+    text-align: center;
+}
+
+.genre-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.genre-header p {
+    font-size: 16px;
+    color: var(--color-text-secondary);
+}
+
+.genre-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.genre-card {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.genre-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+
+.genre-card.selected {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+    color: white;
+}
+
+.genre-icon {
+    font-size: 36px;
+}
+
+.genre-name {
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+@media (min-width: 480px) {
+    .genre-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
