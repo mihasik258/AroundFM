@@ -133,15 +133,17 @@ export function GlobeComponent() {
     }, [currentStation?.country, currentCountryName]);
 
     // Цвет полигона страны
-    const getPolygonColor = (feature: GeoFeature) => {
-        const countryName = feature.properties.ADMIN;
+    const getPolygonColor = (obj: object) => {
+        const feature = obj as GeoFeature;
+        const countryName = feature.properties?.ADMIN;
         const isHighlighted = countryName === currentCountryName;
         return isHighlighted ? 'rgba(251, 191, 36, 0.9)' : 'rgba(74, 222, 128, 0.8)';
     };
 
     // Цвет границы страны
-    const getPolygonStrokeColor = (feature: GeoFeature) => {
-        const countryName = feature.properties.ADMIN;
+    const getPolygonStrokeColor = (obj: object) => {
+        const feature = obj as GeoFeature;
+        const countryName = feature.properties?.ADMIN;
         const isHighlighted = countryName === currentCountryName;
         return isHighlighted ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
     };
