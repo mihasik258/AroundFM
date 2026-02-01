@@ -2,10 +2,23 @@ import { PrismaClient } from '@prisma/client';
 
 // Создаем глобальный экземпляр PrismaClient
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
-export const prisma = globalForPrisma.prisma || new PrismaClient();
 
-if (process.env.NODE_ENV !== 'production') {
-    globalForPrisma.prisma = prisma;
+let prismaInstance: PrismaClient | undefined;
+
+try {
+    if (process.env.DATABASE_URL) {
+        prismaInstance = globalForPrisma.prisma || new PrismaClient();
+    } else {
+        console.warn('⚠️ DATABASE_URL is not set. Database features will be disabled.');
+    }
+} catch (error) {
+    console.error('Failed to initialize Prisma:', error);
+}
+
+export const prisma = prismaInstance as PrismaClient;
+
+if (process.env.NODE_ENV !== 'production' && prismaInstance) {
+    globalForPrisma.prisma = prismaInstance;
 }
 
 export default prisma;
