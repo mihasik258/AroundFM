@@ -1,4 +1,4 @@
-import { RadioStation } from './radioService.js';
+import { RadioStation } from './types.js';
 
 /**
  * Список радиостанций со всего мира

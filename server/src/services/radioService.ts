@@ -1,17 +1,5 @@
+import { RadioStation } from './types.js';
 import { fallbackStations } from './stations.js';
-
-export interface RadioStation {
-    name: string;
-    url: string;
-    homepage: string;
-    favicon: string;
-    tags: string[];
-    country: string;
-    language: string;
-    codec: string;
-    bitrate: number;
-    stationuuid?: string;
-}
 
 /**
  * Получение списка радиостанций с фильтрацией
@@ -28,7 +16,7 @@ export async function getStations(
     if (genre && genre !== 'any') {
         const genreLower = genre.toLowerCase();
         stations = stations.filter(station =>
-            station.tags.some(tag =>
+            station.tags.some((tag: string) =>
                 tag.toLowerCase().includes(genreLower) ||
                 genreLower.includes(tag.toLowerCase())
             )
@@ -98,7 +86,7 @@ export async function getGenres(): Promise<string[]> {
     const allTags = new Set<string>();
 
     fallbackStations.forEach(station => {
-        station.tags.forEach(tag => {
+        station.tags.forEach((tag: string) => {
             allTags.add(tag.toLowerCase());
         });
     });
