@@ -19,10 +19,11 @@ interface AppState {
     setTelegramId: (id: number) => void;
 
     // Настройки фильтров
-    selectedGenre: string;
-    excludedLanguages: string[];
-    setSelectedGenre: (genre: string) => void;
-    setExcludedLanguages: (languages: string[]) => void;
+    selectedGenres: string[];
+    toggleGenre: (genre: string) => void;
+    // Настройки языков (пустой список = все языки доступны)
+    allowedLanguages: string[];
+    setAllowedLanguages: (languages: string[]) => void;
 
     // Станции
     currentStation: RadioStation | null;
@@ -57,10 +58,29 @@ export const useStore = create<AppState>((set, get) => ({
     setTelegramId: (id) => set({ telegramId: id }),
 
     // Настройки фильтров
-    selectedGenre: 'any',
-    excludedLanguages: [],
-    setSelectedGenre: (genre) => set({ selectedGenre: genre }),
-    setExcludedLanguages: (languages) => set({ excludedLanguages: languages }),
+    // Настройки фильтров
+    // Настройки фильтров
+    selectedGenres: ['any'],
+    toggleGenre: (genre) => set((state) => {
+        if (genre === 'any') {
+            return { selectedGenres: ['any'] };
+        }
+
+        let newGenres = state.selectedGenres.filter((g) => g !== 'any');
+        if (newGenres.includes(genre)) {
+            newGenres = newGenres.filter((g) => g !== genre);
+        } else {
+            newGenres = [...newGenres, genre];
+        }
+
+        if (newGenres.length === 0) {
+            newGenres = ['any'];
+        }
+
+        return { selectedGenres: newGenres };
+    }),
+    allowedLanguages: [],
+    setAllowedLanguages: (languages) => set({ allowedLanguages: languages }),
 
     // Станции
     currentStation: null,

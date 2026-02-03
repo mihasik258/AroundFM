@@ -47,11 +47,13 @@
 .language-card:hover {
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
+    border-color: var(--color-primary);
 }
 
-.language-card.excluded {
-    background-color: #fff5f5;
-    border-color: var(--color-error);
+.language-card.selected {
+    background-color: #f0f4ff;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
 }
 
 .language-flag {
@@ -64,13 +66,13 @@
     text-align: center;
 }
 
-.excluded-badge {
+.check-badge {
     position: absolute;
     top: 8px;
     right: 8px;
     width: 20px;
     height: 20px;
-    background-color: var(--color-error);
+    background-color: var(--color-primary);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -78,6 +80,12 @@
     justify-content: center;
     font-size: 12px;
     font-weight: 700;
+}
+
+.subtitle-small {
+    font-size: 12px !important;
+    opacity: 0.7;
+    margin-top: 4px;
 }
 
 .language-actions {

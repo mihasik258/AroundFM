@@ -14,10 +14,13 @@ const GENRES = [
 ];
 
 export function GenreSelector() {
-    const { selectedGenre, setSelectedGenre, setCurrentScreen } = useStore();
+    const { selectedGenres, toggleGenre, setCurrentScreen } = useStore();
 
     const handleGenreSelect = (genreId: string) => {
-        setSelectedGenre(genreId);
+        toggleGenre(genreId);
+    };
+
+    const handleContinue = () => {
         setCurrentScreen('language');
     };
 
@@ -32,7 +35,7 @@ export function GenreSelector() {
                 {GENRES.map((genre) => (
                     <button
                         key={genre.id}
-                        className={`genre-card ${selectedGenre === genre.id ? 'selected' : ''}`}
+                        className={`genre-card ${selectedGenres.includes(genre.id) ? 'selected' : ''}`}
                         onClick={() => handleGenreSelect(genre.id)}
                     >
                         <span className="genre-icon">{genre.icon}</span>
@@ -40,6 +43,10 @@ export function GenreSelector() {
                     </button>
                 ))}
             </div>
+
+            <button className="continue-btn" onClick={handleContinue}>
+                Продолжить
+            </button>
         </div>
     );
 }

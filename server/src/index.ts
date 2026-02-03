@@ -58,12 +58,12 @@ app.get('/health', (req: Request, res: Response) => {
 app.get('/api/stations', async (req: Request, res: Response) => {
     try {
         const genre = req.query.genre as string | undefined;
-        const excludeLanguages = req.query.excludeLanguages
-            ? (req.query.excludeLanguages as string).split(',')
+        const allowedLanguages = req.query.allowedLanguages
+            ? (req.query.allowedLanguages as string).split(',')
             : [];
         const limit = parseInt(req.query.limit as string) || 50;
 
-        const stations = await getStations(genre, excludeLanguages, limit);
+        const stations = await getStations(genre, allowedLanguages, limit);
         res.json({ success: true, data: stations });
     } catch (error) {
         console.error('Error in /api/stations:', error);
@@ -75,11 +75,11 @@ app.get('/api/stations', async (req: Request, res: Response) => {
 app.get('/api/stations/random', async (req: Request, res: Response) => {
     try {
         const genre = req.query.genre as string | undefined;
-        const excludeLanguages = req.query.excludeLanguages
-            ? (req.query.excludeLanguages as string).split(',')
+        const allowedLanguages = req.query.allowedLanguages
+            ? (req.query.allowedLanguages as string).split(',')
             : [];
 
-        const station = await getRandomStation(genre, excludeLanguages);
+        const station = await getRandomStation(genre, allowedLanguages);
 
         if (!station) {
             return res.status(404).json({ success: false, error: 'No stations found' });
@@ -218,10 +218,10 @@ app.post('/api/users/:telegramId/preferences', async (req: Request, res: Respons
         const telegramId = parseInt(req.params.telegramId);
         const user = await getOrCreateUser(telegramId);
 
-        const { preferredGenre, excludedLanguages } = req.body;
+        const { preferredGenre, allowedLanguages } = req.body;
         const preferences = await saveUserPreferences(user.id, {
             preferredGenre,
-            excludedLanguages,
+            allowedLanguages,
         });
 
         res.json({ success: true, data: preferences });
