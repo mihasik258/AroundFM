@@ -15,11 +15,19 @@ const LANGUAGES = [
     { id: 'korean', name: 'Корейский', flag: '🇰🇷' },
     { id: 'arabic', name: 'Арабский', flag: '🇸🇦' },
     { id: 'hindi', name: 'Хинди', flag: '🇮🇳' },
+    { id: 'turkish', name: 'Турецкий', flag: '🇹🇷' },
+    { id: 'ukrainian', name: 'Украинский', flag: '🇺🇦' },
+    { id: 'polish', name: 'Польский', flag: '🇵🇱' },
+    { id: 'dutch', name: 'Нидерландский', flag: '🇳🇱' },
+    { id: 'swedish', name: 'Шведский', flag: '🇸🇪' },
+    { id: 'finnish', name: 'Финский', flag: '🇫🇮' },
+    { id: 'greek', name: 'Греческий', flag: '🇬🇷' },
+    { id: 'czech', name: 'Чешский', flag: '🇨🇿' },
 ];
 
 export function LanguageFilter() {
-    const { excludedLanguages, setExcludedLanguages, setCurrentScreen } = useStore();
-    const [selected, setSelected] = useState<string[]>(excludedLanguages);
+    const { allowedLanguages, setAllowedLanguages, setCurrentScreen } = useStore();
+    const [selected, setSelected] = useState<string[]>(allowedLanguages);
 
     const toggleLanguage = (langId: string) => {
         if (selected.includes(langId)) {
@@ -30,33 +38,35 @@ export function LanguageFilter() {
     };
 
     const handleContinue = () => {
-        setExcludedLanguages(selected);
+        setAllowedLanguages(selected);
         setCurrentScreen('player');
     };
 
     const handleSkip = () => {
-        setExcludedLanguages([]);
+        // Если пропустили -> значит знают все языки (пустой список = все доступны)
+        setAllowedLanguages([]);
         setCurrentScreen('player');
     };
 
     return (
         <div className="language-filter">
             <div className="language-header">
-                <h1>Фильтр языков</h1>
-                <p>Выберите языки, которые НЕ должны попадаться</p>
+                <h1>Языки</h1>
+                <p>Выберите языки, которые вы понимаете</p>
+                <p className="subtitle-small">(Если не выбрать ничего, будут доступны все)</p>
             </div>
 
             <div className="language-grid">
                 {LANGUAGES.map((lang) => (
                     <button
                         key={lang.id}
-                        className={`language-card ${selected.includes(lang.id) ? 'excluded' : ''}`}
+                        className={`language-card ${selected.includes(lang.id) ? 'selected' : ''}`}
                         onClick={() => toggleLanguage(lang.id)}
                     >
                         <span className="language-flag">{lang.flag}</span>
                         <span className="language-name">{lang.name}</span>
                         {selected.includes(lang.id) && (
-                            <span className="excluded-badge">✕</span>
+                            <span className="check-badge">✓</span>
                         )}
                     </button>
                 ))}
@@ -64,7 +74,7 @@ export function LanguageFilter() {
 
             <div className="language-actions">
                 <button className="btn-secondary" onClick={handleSkip}>
-                    Все языки подходят
+                    Пропустить (все языки)
                 </button>
                 <button className="btn-primary" onClick={handleContinue}>
                     Продолжить

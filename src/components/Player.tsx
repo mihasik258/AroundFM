@@ -42,7 +42,7 @@ function getLanguageFlag(language: string): string {
 export function Player() {
     const {
         currentStation,
-        selectedGenre,
+        selectedGenres,
         excludedLanguages,
         setCurrentStation,
         setStationQueue,
@@ -64,7 +64,7 @@ export function Player() {
         setError(null);
 
         try {
-            const stations = await fetchStations(selectedGenre, excludedLanguages, 50);
+            const stations = await fetchStations(selectedGenres, excludedLanguages, 50);
 
             if (stations.length === 0) {
                 setError('Не найдено станций с выбранными фильтрами');
@@ -172,9 +172,13 @@ export function Player() {
                         <span className="language-flag">{getLanguageFlag(currentStation.language)}</span>
                     )}
                 </div>
-                {selectedGenre && (
-                    <div className="genre-badge">
-                        🎵 {selectedGenre}
+                {currentStation?.tags && currentStation.tags.length > 0 && (
+                    <div className="tags-container">
+                        {currentStation.tags.map((tag, index) => (
+                            <span key={index} className="genre-badge">
+                                🎵 {tag}
+                            </span>
+                        ))}
                     </div>
                 )}
             </div>

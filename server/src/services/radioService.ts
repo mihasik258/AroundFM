@@ -7,27 +7,36 @@ import { fallbackStations } from './stations.js';
  */
 export async function getStations(
     genre?: string,
-    excludeLanguages: string[] = [],
+    allowedLanguages: string[] = [],
     limit: number = 50
 ): Promise<RadioStation[]> {
     let stations = [...fallbackStations];
 
-    // Фильтр по жанру
+    // Фильтр по жанрам
     if (genre && genre !== 'any') {
-        const genreLower = genre.toLowerCase();
-        stations = stations.filter(station =>
-            station.tags.some((tag: string) =>
-                tag.toLowerCase().includes(genreLower) ||
-                genreLower.includes(tag.toLowerCase())
-            )
-        );
+        const genres = genre.toLowerCase().split(',').map(g => g.trim()).filter(g => g);
+
+        if (genres.length > 0) {
+            stations = stations.filter(station => {
+                const stationTags = station.tags.map(t => t.toLowerCase());
+                // Станция подходит, если хотя бы один из выбранных жанров есть в тегах станции
+                // Или если тег станции содержит выбранный жанр (частичное совпадение)
+                return genres.some(selectedGenre =>
+                    stationTags.some(tag => tag.includes(selectedGenre) || selectedGenre.includes(tag))
+                );
+            });
+        }
     }
 
-    // Фильтрация по языкам (исключение)
-    if (excludeLanguages.length > 0) {
+    // Фильтрация по языкам (известные языки)
+    if (allowedLanguages.length > 0) {
         stations = stations.filter(station => {
-            const stationLang = station.language?.toLowerCase() || '';
-            return !excludeLanguages.some(lang =>
+            // Если язык станции не указан (инструментал), оставляем
+            if (!station.language) return true;
+
+            const stationLang = station.language.toLowerCase();
+            // Станция подходит, если её язык есть в списке известных
+            return allowedLanguages.some(lang =>
                 stationLang.includes(lang.toLowerCase())
             );
         });
@@ -59,9 +68,9 @@ function shuffleArray<T>(array: T[]): T[] {
  */
 export async function getRandomStation(
     genre?: string,
-    excludeLanguages: string[] = []
+    allowedLanguages: string[] = []
 ): Promise<RadioStation | null> {
-    const stations = await getStations(genre, excludeLanguages, 50);
+    const stations = await getStations(genre, allowedLanguages, 50);
 
     if (stations.length === 0) {
         return null;

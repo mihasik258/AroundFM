@@ -11,15 +11,21 @@ const api = axios.create({
 });
 
 // Станции
+// Станции
 export async function fetchStations(
-    genre?: string,
+    genres: string[] | string = [],
     excludeLanguages: string[] = [],
     limit: number = 50
 ): Promise<RadioStation[]> {
     const params: any = { limit };
-    if (genre && genre !== 'any') {
-        params.genre = genre;
+
+    const genreList = Array.isArray(genres) ? genres : [genres];
+    const filteredGenres = genreList.filter(g => g && g !== 'any');
+
+    if (filteredGenres.length > 0) {
+        params.genre = filteredGenres.join(',');
     }
+
     if (excludeLanguages.length > 0) {
         params.excludeLanguages = excludeLanguages.join(',');
     }
@@ -29,13 +35,18 @@ export async function fetchStations(
 }
 
 export async function fetchRandomStation(
-    genre?: string,
+    genres: string[] | string = [],
     excludeLanguages: string[] = []
 ): Promise<RadioStation> {
     const params: any = {};
-    if (genre && genre !== 'any') {
-        params.genre = genre;
+
+    const genreList = Array.isArray(genres) ? genres : [genres];
+    const filteredGenres = genreList.filter(g => g && g !== 'any');
+
+    if (filteredGenres.length > 0) {
+        params.genre = filteredGenres.join(',');
     }
+
     if (excludeLanguages.length > 0) {
         params.excludeLanguages = excludeLanguages.join(',');
     }
@@ -98,7 +109,7 @@ export async function saveUserPreferences(
     telegramId: number,
     preferences: {
         preferredGenre?: string;
-        excludedLanguages?: string[];
+        allowedLanguages?: string[];
     }
 ): Promise<void> {
     await api.post(`/api/users/${telegramId}/preferences`, preferences);

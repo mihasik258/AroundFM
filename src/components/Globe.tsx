@@ -132,12 +132,13 @@ export function GlobeComponent() {
         }];
     }, [currentStation?.country, currentCountryName]);
 
-    // Цвет полигона страны
+    // Цвет полигона страны (Минимализм)
     const getPolygonColor = (obj: object) => {
         const feature = obj as GeoFeature;
         const countryName = feature.properties?.ADMIN;
         const isHighlighted = countryName === currentCountryName;
-        return isHighlighted ? 'rgba(251, 191, 36, 0.9)' : 'rgba(74, 222, 128, 0.8)';
+        // Желтый для выбранной, яркий зеленый для остальных
+        return isHighlighted ? '#fcd34d' : 'rgba(74, 222, 128, 0.7)';
     };
 
     // Цвет границы страны
@@ -145,7 +146,8 @@ export function GlobeComponent() {
         const feature = obj as GeoFeature;
         const countryName = feature.properties?.ADMIN;
         const isHighlighted = countryName === currentCountryName;
-        return isHighlighted ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
+        // Яркая белая граница
+        return '#ffffff';
     };
 
     // Центрирование на текущей стране при смене
@@ -189,7 +191,7 @@ export function GlobeComponent() {
                 height: '300px',
                 borderRadius: '16px',
                 overflow: 'hidden',
-                background: 'radial-gradient(circle at 50% 50%, #e0f2fe 0%, #bae6fd 100%)'
+                background: 'radial-gradient(circle at 50% 50%, #f0f9ff 0%, #bae6fd 100%)'
             }}
         >
             <Globe
@@ -197,18 +199,21 @@ export function GlobeComponent() {
                 width={dimensions.width}
                 height={dimensions.height}
 
-                // Глобус
-                globeImageUrl="//unpkg.com/three-globe/example/img/earth-water.png"
+                // Глобус (Скрываем черный шар, фон - это океан)
+                showGlobe={false}
                 backgroundColor="rgba(0,0,0,0)"
+                showAtmosphere={true}
+                atmosphereColor="#7dd3fc"
+                atmosphereAltitude={0.15}
 
                 // Полигоны стран
                 polygonsData={countries.features}
                 polygonCapColor={getPolygonColor}
-                polygonSideColor={() => 'rgba(74, 222, 128, 0.3)'}
+                polygonSideColor={() => 'rgba(0, 0, 0, 0)'}
                 polygonStrokeColor={getPolygonStrokeColor}
                 polygonAltitude={(d: any) => {
                     const countryName = d.properties?.ADMIN;
-                    return countryName === currentCountryName ? 0.02 : 0.01;
+                    return countryName === currentCountryName ? 0.04 : 0.01;
                 }}
 
                 // Маркеры (точки)
@@ -216,21 +221,17 @@ export function GlobeComponent() {
                 pointLat="lat"
                 pointLng="lng"
                 pointColor="color"
-                pointAltitude={0.05}
-                pointRadius={0.8}
+                pointAltitude={0.08}
+                pointRadius={0.5}
 
                 // Кольца вокруг маркера
                 ringsData={markerData}
                 ringLat="lat"
                 ringLng="lng"
                 ringColor={() => '#f59e0b'}
-                ringMaxRadius={3}
+                ringMaxRadius={5}
                 ringPropagationSpeed={2}
                 ringRepeatPeriod={1000}
-
-                // Атмосфера
-                atmosphereColor="#38bdf8"
-                atmosphereAltitude={0.15}
 
                 // Настройки
                 animateIn={true}
